@@ -1,0 +1,30 @@
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: js-sample
+    apps.tanzu.vmware.com/has-tests: true
+    apps.tanzu.vmware.com/workload-type: web
+  name: js-sample
+  namespace: my-apps
+spec:
+  build:
+    env:
+    - name: NODE_ENV
+      value: production
+    - name: GENERATE_SOURCEMAP
+      value: "false"
+    - name: BP_NODE_RUN_SCRIPTS
+      value: build
+    - name: BP_WEB_SERVER_ROOT
+      value: build
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  source:
+    git:
+      ref:
+        branch: main
+      url: https://github.com/thitch97/js-sample
